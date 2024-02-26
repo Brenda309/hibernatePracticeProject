@@ -52,7 +52,7 @@ public class UserDao {
 
 
     }
-    public void delete(int id){
+    public void deleteUser(int id){
         Transaction transaction = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             //start transaction
@@ -71,7 +71,30 @@ public class UserDao {
             }
             e.printStackTrace();
         }
+    }
 
+    /**
+     * Get User By ID
+     * @param id
+     * @return
+     */
 
+    public User getUserById(int id){
+        Transaction transaction = null;
+        User user = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            //start transaction
+            transaction = session.beginTransaction();
+            //delete user object
+            user =session.get(User.class, id);
+            // commit trans
+            transaction.commit();
+        }catch (Exception e){
+            if (transaction != null){
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return user;
     }
 }
