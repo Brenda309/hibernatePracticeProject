@@ -6,6 +6,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import utils.HibernateUtil;
 
+import java.util.List;
+
 //CRUD operations
 public class UserDao {
 //    save user;
@@ -96,5 +98,32 @@ public class UserDao {
             e.printStackTrace();
         }
         return user;
+    }
+
+    /**
+     * Get all Users
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+
+    public List<User> getAllUser(){
+        Transaction transaction = null;
+        List <User> listOfUser = null;
+
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+           transaction = session.beginTransaction();
+           //get users
+            listOfUser = session.createQuery("from User").getResultList();
+
+            //commit transaction
+            transaction.commit();
+        }catch ( Exception e){
+
+            if(transaction != null){
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return listOfUser;
     }
 }
