@@ -29,4 +29,28 @@ public class UserDao {
 
 
     }
+
+    /**
+     * Update User
+     * @param user
+     */
+    public void updateUser(User user){
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            //start transaction
+            transaction = session.beginTransaction();
+            //save student object
+            session.update(user);
+            // commit trans
+            transaction.commit();
+        }catch (Exception e){
+            if (transaction != null){
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+
+
+    }
+
 }
