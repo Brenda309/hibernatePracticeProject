@@ -98,7 +98,12 @@ throws SQLException, IOException{
     userDao.updateUser(newUser);
     response.sendRedirect("list");
 }
-
+private void deleteUser(HttpServletRequest request, HttpServletResponse response)
+throws SQLException, IOException{
+      int id = Integer.parseInt(request.getParameter("id"));
+      userDao.deleteUser(id);
+      response.sendRedirect("list");
+}
 }
 
 
