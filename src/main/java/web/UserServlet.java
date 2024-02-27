@@ -89,6 +89,15 @@ public class UserServlet  extends HttpServlet {
         userDao.saveUser(newUser);
         response.sendRedirect("list");
     }
+private void updateUser(HttpServletRequest request, HttpServletResponse response)
+throws SQLException, IOException{
+    String name = request.getParameter("name");
+    String email = request.getParameter("email");
+    String country = request.getParameter("country");
+    User newUser = new User(name,email,country);
+    userDao.updateUser(newUser);
+    response.sendRedirect("list");
+}
 
 }
 
