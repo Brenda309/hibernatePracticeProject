@@ -80,5 +80,16 @@ public class UserServlet  extends HttpServlet {
         request.setAttribute("user", existingUser);
         dispatcher.forward(request, response);
     }
+    private void insertUser(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String country = request.getParameter("country");
+       User newUser = new User(name,email,country);
+        userDao.saveUser(newUser);
+        response.sendRedirect("list");
+    }
+
 }
+
 
