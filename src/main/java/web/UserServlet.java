@@ -27,7 +27,7 @@ public class UserServlet  extends HttpServlet {
         doGet(request, response);
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getServletPath();
         try {
             switch (action) {
@@ -35,40 +35,50 @@ public class UserServlet  extends HttpServlet {
                     showNewFrom(request, response);
                     break;
 
-                    case "/insert":
-                        insertUser(request, response);
-                        break;
+                case "/insert":
+                    insertUser(request, response);
+                    break;
                 case "/delete":
                     deleteUser(request, response);
                     break;
 
                 case "/edit":
-                   showEditFrom(request, response);
+                    showEditFrom(request, response);
                     break;
                 case "/update":
                     updateUser(request, response);
                     break;
 
                 default:
-                   listUser(request, response);
+                    listUser(request, response);
                     break;
             }
-        }catch (SQLException ex){
+        } catch (SQLException ex) {
             throw new ServletException(ex);
         }
     }
 
-    protected void listUser(HttpServletRequest request, HttpServletResponse response)
+    private void listUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-    List<User> listUser = userDao.getAllUser();
-    request.setAttribute("ListUser", listUser);
+        List<User> listUser = userDao.getAllUser();
+        request.setAttribute("ListUser", listUser);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user-list.jsp");
-        dispatcher.forward(request,response);
-    }
-    protected void showNewFrom (HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException{
-       RequestDispatcher dispatcher = request.getRequestDispatcher("user-form.jsp");
-       dispatcher.forward(request, response);
+        dispatcher.forward(request, response);
     }
 
+    private void showNewFrom(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user-form.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void showEditFrom (HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        User existingUser = userDao.getUserById(id);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user-form.jsp");
+        request.setAttribute("user", existingUser);
+        dispatcher.forward(request, response);
+    }
 }
+
